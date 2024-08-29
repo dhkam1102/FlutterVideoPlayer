@@ -91,26 +91,58 @@ class VideoPlayerModel with ChangeNotifier {
   void setDenoise(double value) {
     _denoise = value;
     // Apply denoise filter to stream
+    applyDenoiseFilter()
     notifyListeners();
   }
 
   void setDehaze(double value) {
     _dehaze = value;
     // Apply dehaze filter to stream
+    applyDehazeFilter(); 
     notifyListeners();
   }
 
   void play() {
-    // Implement play functionality
+    if (_stream != null) {
+      _stream!.getTracks().forEach((track) {
+        track.enabled = true;
+      });
+    }
   }
 
   void pause() {
-    // Implement pause functionality
+    if (_stream != null) {
+      _stream!.getTracks().forEach((track) {
+        track.enabled = false;
+      });
+    }
   }
 
-  void refresh() {
-    // Implement refresh functionality
+ void refresh() {
+    if (_stream != null) {
+      _stream!.getTracks().forEach((track) {
+        track.stop();
+      });
+      // re- initializing the stream
+      initRenderer(); 
+    }
   }
+
+  void applyDenoiseFilter() {
+    // Example of applying a denoise filter
+    // This is a placeholder; you would need to integrate with
+    // a library or custom implementation to apply the actual filter.
+    print("Denoise filter applied with level $_denoise");
+  }
+
+  void applyDehazeFilter() {
+    // Example of applying a dehaze filter
+    // This is a placeholder; you would need to integrate with
+    // a library or custom implementation to apply the actual filter.
+    print("Dehaze filter applied with level $_dehaze");
+  }
+
+
 
   @override
   void dispose() {
