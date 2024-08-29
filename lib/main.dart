@@ -73,6 +73,7 @@ class VideoPlayerScreen extends StatelessWidget {
 
 class VideoPlayerModel with ChangeNotifier {
   final localRenderer = RTCVideoRenderer();
+  MediaStream? _stream;
   double _denoise = 0.0;
   double _dehaze = 0.0;
 
@@ -83,6 +84,11 @@ class VideoPlayerModel with ChangeNotifier {
   Future<void> initRenderer() async {
     await localRenderer.initialize();
     // Set up WebRTC stream here
+    _stream = await navigator.mediaDevices.getUserMedia({
+      'video': true,
+      'audio': false,
+    });
+    localRenderer.srcObject = _stream;
   }
 
   double get denoise => _denoise;
@@ -91,7 +97,7 @@ class VideoPlayerModel with ChangeNotifier {
   void setDenoise(double value) {
     _denoise = value;
     // Apply denoise filter to stream
-    applyDenoiseFilter()
+    applyDenoiseFilter();
     notifyListeners();
   }
 
