@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:provider/provider.dart';
+import 'filters.dart'; // Import the new filters file
+
+
 
 void main() {
   runApp(MyApp());
@@ -174,13 +177,13 @@ class VideoPlayerModel with ChangeNotifier {
 
   void setDenoise(double value) {
     _denoise = value;
-    applyDenoiseFilter();
+    applyDenoise(localRenderer, _denoise); // Call function from filters.dart
     notifyListeners();
   }
 
   void setDehaze(double value) {
     _dehaze = value;
-    applyDehazeFilter();
+    applyDehaze(localRenderer, _dehaze); // Call function from filters.dart
     notifyListeners();
   }
 
